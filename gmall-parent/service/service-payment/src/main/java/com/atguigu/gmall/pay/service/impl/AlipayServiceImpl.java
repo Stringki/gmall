@@ -1,7 +1,6 @@
 package com.atguigu.gmall.pay.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
-import com.alipay.api.AlipayApiException;
 import com.alipay.api.AlipayClient;
 import com.alipay.api.request.AlipayTradePagePayRequest;
 import com.atguigu.gmall.model.order.OrderInfo;
@@ -29,6 +28,7 @@ public class AlipayServiceImpl implements AlipayService {
     //异步回调地址
     @Value("${alipay.pay.notify_payment_url}")
     private String notifyPaymentUrl;
+
     /**
      * 支付下单
      *
@@ -37,8 +37,9 @@ public class AlipayServiceImpl implements AlipayService {
      */
     @Override
     public String createAliPay(Long orderId) {
-        //OrderInfo orDeInfo = orderFeign.getOrDeInfo(orderId);
-        //BigDecimal totalAmount = orDeInfo.getTotalAmount();
+        OrderInfo orDeInfo = orderFeign.getOrDeInfo(orderId);
+        String outTradeNo = orDeInfo.getOutTradeNo();//通过订单ID获取到订单编号
+        //BigDecimal totalAmount = orDeInfo.getTotalAmount();//获取到订单交易总金额
         //创建支付请求对象
         AlipayTradePagePayRequest payRequest = new AlipayTradePagePayRequest();
         //设置同步回调地址
